@@ -1,0 +1,147 @@
+meu-site-de-clips-virais/
+│
+├── index.html
+├── style.css
+├── script.js
+├── upload.php (ou outro backend para upload de arquivos)
+└── assets/
+    └── effects/
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Clips Virais</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Crie Clips Virais</h1>
+        <p>Envie um vídeo, aplique efeitos e crie seu clip viral!</p>
+    </header>
+
+    <main>
+        <section id="upload-section">
+            <h2>Carregar Vídeo</h2>
+            <input type="file" id="video-upload" accept="video/*">
+            <button id="upload-btn">Enviar Vídeo</button>
+        </section>
+
+        <section id="effects-section" style="display:none;">
+            <h2>Aplique Efeitos</h2>
+            <button id="effect1">Efeito 1</button>
+            <button id="effect2">Efeito 2</button>
+            <button id="effect3">Efeito 3</button>
+        </section>
+
+        <section id="preview-section" style="display:none;">
+            <h2>Pré-visualizar Clip</h2>
+            <video id="video-preview" controls></video>
+        </section>
+        
+        <section id="share-section" style="display:none;">
+            <h2>Compartilhar</h2>
+            <button id="share-btn">Compartilhar no Twitter</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Clips Virais</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+// Seção de upload
+document.getElementById('upload-btn').addEventListener('click', function() {
+    let fileInput = document.getElementById('video-upload');
+    let videoFile = fileInput.files[0];
+
+    if (videoFile) {
+        let videoURL = URL.createObjectURL(videoFile);
+        let videoPreview = document.getElementById('video-preview');
+        videoPreview.src = videoURL;
+        videoPreview.style.display = 'block';
+
+        // Exibir a seção de efeitos e preview
+        document.getElementById('effects-section').style.display = 'block';
+        document.getElementById('preview-section').style.display = 'block';
+    } else {
+        alert("Por favor, selecione um vídeo.");
+    }
+});
+
+// Exemplo de efeitos
+document.getElementById('effect1').addEventListener('click', function() {
+    let videoPreview = document.getElementById('video-preview');
+    videoPreview.style.filter = 'grayscale(100%)'; // Exemplo de filtro
+});
+
+document.getElementById('effect2').addEventListener('click', function() {
+    let videoPreview = document.getElementById('video-preview');
+    videoPreview.style.filter = 'sepia(100%)'; // Outro efeito
+});
+
+document.getElementById('effect3').addEventListener('click', function() {
+    let videoPreview = document.getElementById('video-preview');
+    videoPreview.style.filter = 'invert(100%)'; // Efeito de inversão
+});
+
+// Seção de compartilhamento (simulação)
+document.getElementById('share-btn').addEventListener('click', function() {
+    alert("Seu clip foi compartilhado no Twitter!");
+});
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['video'])) {
+    $targetDir = "uploads/";
+    $targetFile = $targetDir . basename($_FILES['video']['name']);
+    
+    // Verifica o tipo do arquivo
+    if (move_uploaded_file($_FILES['video']['tmp_name'], $targetFile)) {
+        echo "O vídeo foi carregado com sucesso!";
+    } else {
+        echo "Erro ao carregar o vídeo.";
+    }
+}
+?>
